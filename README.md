@@ -2,5 +2,7 @@
 
 
 ## Realtime Notification App
+I'll cover Laravel broadcasting in this project using public, private and presence channels,
 
+psdaf
 
