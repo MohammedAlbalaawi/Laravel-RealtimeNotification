@@ -1,9 +1,11 @@
-<p align="center"><img src="https://cdn-icons-png.flaticon.com/512/8297/8297354.png" width="100" alt="Laravel Logo"></p>
+<p align="center"><img src="https://cdn-icons-png.flaticon.com/512/8297/8297354.png" width="100" alt="Logo"></p>
 
 
 ## Realtime Notification App
 I'll cover Laravel broadcasting in this project using public, private and presence channels,
 
+## Preparing - layout
+- in resources folder/views/layouts/app.blade.php *add* in header `@stack('styles')` and `@stack('scripts')` before close body tag
 ## Preparing - auth
 - Install authentication system `composer require laravel/ui`
 - Scaffolding `php artisan ui bootstrap --auth`
@@ -37,3 +39,4 @@ window.Echo = new Echo({
     forceTLS: true
 });
 ```
+-----------------------------------------
