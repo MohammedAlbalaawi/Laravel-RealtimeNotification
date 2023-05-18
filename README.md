@@ -1,7 +1,7 @@
 <p align="center"><img src="https://cdn-icons-png.flaticon.com/512/8297/8297354.png" width="100" alt="Logo"></p>
 
 *add validation, services, ...ect*
-*it's a quick code*
+<br />*it's a quick code*
 
 ## Realtime Notification App
 I'll cover Laravel broadcasting in this project using public, private and presence channels,
