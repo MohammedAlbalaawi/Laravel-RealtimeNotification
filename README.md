@@ -40,3 +40,37 @@ window.Echo = new Echo({
 });
 ```
 -----------------------------------------
+## 1- Realtime Notification when Login/Logout
+- In resources/views/layouts/app.blade.php `<div id="notification" class="alert mx-3 invisible"></div>`
+<br /> This *div* will be visible in realtime when user login or logout
+- Create Event: UserSessionChangedEvent
+<br /> Add *$message*, *$type* public properties to constactor
+<br /> In *broadcastOn()* specify public channel name *notifications*
+- Create Listener: UserLoginListeneer
+<br /> In *handle()* add `broadcast(new UserSessionChangedEvent("{$event->user->name} is ONLINE",'success'))`
+- Create Listener: UserLogoutListeneer
+<br /> In *handle()* add `broadcast(new UserSessionChangedEvent("{$event->user->name} is OFFLINE",'danger'))`
+- In app folder/Provider/EventServiceProvider.php *add*
+```
+      Login::class => [
+            UserLoginListener::class,
+        ],
+        Logout::class => [
+            UserLogoutListener::class,
+        ],
+```
+- In resources folder/js/app.js *add*
+```
+Echo.channel('notifications')
+    .listen('UserSessionChangedEvent', (e) => {
+        const notificationElement = document.getElementById('notification');
+        notificationElement.innerText = e.message;
+
+        notificationElement.classList.remove('invisible');
+        notificationElement.classList.remove('success');
+        notificationElement.classList.remove('danger');
+
+        notificationElement.classList.add('alert-' + e.type);
+    });
+```
+------------------
