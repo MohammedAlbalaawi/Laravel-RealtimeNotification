@@ -1,11 +1,15 @@
 <p align="center"><img src="https://cdn-icons-png.flaticon.com/512/8297/8297354.png" width="100" alt="Logo"></p>
 
+*add validation, services, ...ect*
+*it's a quick code*
 
 ## Realtime Notification App
 I'll cover Laravel broadcasting in this project using public, private and presence channels,
 
 ## Preparing - layout
 - in resources folder/views/layouts/app.blade.php *add* in header `@stack('styles')` and `@stack('scripts')` before close body tag
+<br />*we'll use it later*
+
 ## Preparing - auth
 - Install authentication system `composer require laravel/ui`
 - Scaffolding `php artisan ui bootstrap --auth`
@@ -74,3 +78,77 @@ Echo.channel('notifications')
     });
 ```
 ------------------
+## 2- Realtime API - CRUD in realtime
+- *Create* a user controller `php artisan make:controller Api\UserController --api`
+- Add the logic for user crud in UserController.php
+```
+public function index()
+    {
+        return User::all();
+    }
+    
+    public function store(Request $request)
+    {
+        $data = $request->all();
+        $data['password'] = Hash::make($request->password);
+
+        return User::create($data);
+    }
+
+    
+    public function show(User $user)
+    {
+        return $user;
+    }
+    
+    public function update(Request $request, User $user)
+    {
+        $data = $request->all();
+        $data['password'] = Hash::make($request->password);
+
+        return $user->update($data);
+    }
+    
+    public function destroy(User $user)
+    {
+        return $user->delete();
+    }
+    ```
+- In routes/api.php `Route::apiResource('users',UserController::class)`
+- In routes/web.php `Route::view('users', 'users.index')->name('users.index')`
+<br /> Now we will this list update in realtime when CRUD user
+- *Create* 3 Events for user Created, Updated and Deleted and set the public channel name 'users'
+- User Model add
+```
+    protected $dispatchesEvents = [
+        'created' => UserCreatedEvent::class,
+        'updated' => UserUpdatedEvent::class,
+        'deleted' => UserDeletedEvent::class,
+    ];
+```
+- Add
+```
+    <script type="module">
+        const usersElement = document.getElementById('users');
+
+        Echo.channel('users')
+            .listen('UserCreatedEvent', (e) =>{
+                let element = document.createElement('li');
+
+                element.setAttribute('id', e.user.id);
+                element.innerText = e.user.name;
+
+                usersElement.appendChild(element);
+            })
+            .listen('UserUpdatedEvent', (e) =>{
+                const element = document.getElementById(e.user.id);
+                element.innerText = e.user.name;
+
+            })
+            .listen('UserDeletedEvent', (e) =>{
+                const element = document.getElementById(e.user.id);
+                element.parentNode.removeChild(element);
+            });
+    </script>
+    ```
+    
