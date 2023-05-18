@@ -114,6 +114,7 @@ public function index()
         return $user->delete();
     }
     ```
+    
 - In routes/api.php `Route::apiResource('users',UserController::class)`
 - In routes/web.php `Route::view('users', 'users.index')->name('users.index')`
 <br /> Now we will this list update in realtime when CRUD user
@@ -126,6 +127,7 @@ public function index()
         'deleted' => UserDeletedEvent::class,
     ];
 ```
+
 - Add
 ```
     <script type="module">
