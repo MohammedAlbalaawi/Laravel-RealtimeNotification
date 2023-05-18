@@ -81,7 +81,7 @@ Echo.channel('notifications')
 ## 2- Realtime API - CRUD in realtime
 - *Create* a user controller `php artisan make:controller Api\UserController --api`
 - Add the logic for user crud in UserController.php
-```
+
 public function index()
     {
         return User::all();
@@ -113,13 +113,13 @@ public function index()
     {
         return $user->delete();
     }
-    ```
     
 - In routes/api.php `Route::apiResource('users',UserController::class)`
 - In routes/web.php `Route::view('users', 'users.index')->name('users.index')`
 <br /> Now we will this list update in realtime when CRUD user
 - *Create* 3 Events for user Created, Updated and Deleted and set the public channel name 'users'
 - User Model add
+
 ```
     protected $dispatchesEvents = [
         'created' => UserCreatedEvent::class,
@@ -152,5 +152,4 @@ public function index()
                 element.parentNode.removeChild(element);
             });
     </script>
-    ```
-    
+```
